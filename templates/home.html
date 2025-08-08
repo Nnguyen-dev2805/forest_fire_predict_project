@@ -1,26 +1,138 @@
-<html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algerian Forest Fires - Dự đoán FWI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .btn-primary {
+            background: linear-gradient(to right, #10b981, #059669);
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(to right, #059669, #047857);
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        .btn-secondary {
+            background: linear-gradient(to right, #6b7280, #4b5563);
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background: linear-gradient(to right, #4b5563, #374151);
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        input {
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        input:focus {
+            outline: none;
+            border-color: #059669;
+            box-shadow: 0 0 8px rgba(5, 150, 105, 0.3);
+        }
+    </style>
+</head>
 <body>
-    <div class="login">
-       <h1>FWI Prediction</h1>
-   
-        <!-- Main Input For Receiving Query to our ML -->
-       <form action="{{ url_for('predict_datapoint')}}" method="post">
-         <input type="text" name="Temperature" placeholder="Temperature" required="required" /><br>
-           <input type="text" name="RH" placeholder="RH" required="required" /><br>
-           <input type="text" name="Ws" placeholder="Ws" required="required" /><br>
-           <input type="text" name="Rain" placeholder="Rain" required="required" /><br>
-           <input type="text" name="FFMC" placeholder="FFMC" required="required" /><br>
-           <input type="text" name="DMC" placeholder="DMC" required="required" /><br>
-           <input type="text" name="ISI" placeholder="ISI" required="required" /><br>
-           <input type="text" name="Classes" placeholder="Classes" required="required" /><br>
-           <input type="text" name="Region" placeholder="Region" required="required" /><br>
-   
-   
-   
-           <button type="submit" class="btn btn-primary btn-block btn-large">Predict</button>
-       </form>
-    <h2>
-       THE FWI prediction is {{result}}
-    </h2>
-   <body>
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-green-700 via-teal-600 to-blue-600 text-white py-16 text-center">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 fade-in">Dự đoán Chỉ số FWI</h1>
+            <p class="text-lg md:text-xl max-w-2xl mx-auto fade-in">
+                Nhập các thông số môi trường để dự đoán nguy cơ cháy rừng với mô hình Machine Learning.
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-12">
+        <!-- Prediction Form -->
+        <section class="max-w-lg mx-auto bg-white p-8 rounded-2xl shadow-xl fade-in">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Nhập Thông số</h2>
+            <form action="{{ url_for('predict_datapoint')}}" method="post" class="space-y-4">
+                <div>
+                    <input type="number" step="any" name="Temperature" placeholder="Nhiệt độ (°C)" required="required" class="w-full p-3 border border-gray-300 rounded-lg focus:border-green-600" />
+                </div>
+                <div>
+                    <input type="number" step="any" name="RH" placeholder="Độ ẩm tương đối (%)" required="required" class="w-full p-3 border border-gray-300 rounded-lg focus:border-green-600" />
+                </div>
+                <div>
+                    <input type="number" step="any" name="Ws" placeholder="Tốc độ gió (km/h)" required="required" class="w-full p-3 border border-gray-300 rounded-lg focus:border-green-600" />
+                </div>
+                <div>
+                    <input type="number" step="any" name="Rain" placeholder="Lượng mưa (mm)" required="required" class="w-full p-3 border border-gray-300 rounded-lg focus:border-green-600" />
+                </div>
+                <div>
+                    <input type="number" step="any" name="FFMC" placeholder="FFMC (Chỉ số nhiên liệu mịn)" required="required" class="w-full p-3 border border-gray-300 rounded-lg focus:border-green-600" />
+                </div>
+                <div>
+                    <input type="number" step="any" name="DMC" placeholder="DMC (Chỉ số nhiên liệu khô)" required="required" class="w-full p-3 border border-gray-300 rounded-lg focus:border-green-600" />
+                </div>
+                <div>
+                    <input type="number" step="any" name="ISI" placeholder="ISI (Chỉ số lan truyền ban đầu)" required="required" class="w-full p-3 border border-gray-300 rounded-lg focus:border-green-600" />
+                </div>
+                <div>
+                    <input type="number" step="any" name="Classes" placeholder="Classes (0 hoặc 1)" required="required" class="w-full p-3 border border-gray-300 rounded-lg focus:border-green-600" />
+                </div>
+                <div>
+                    <input type="number" step="any" name="Region" placeholder="Region (0 hoặc 1)" required="required" class="w-full p-3 border border-gray-300 rounded-lg focus:border-green-600" />
+                </div>
+                <button type="submit" class="w-full btn-primary text-white font-semibold py-3 rounded-lg">Dự đoán</button>
+            </form>
+            <a href="/" class="inline-block w-full mt-4 btn-secondary text-white font-semibold py-3 rounded-lg text-center">Quay lại Trang chủ</a>
+        </section>
+
+        <!-- Prediction Result -->
+        {% if result is defined %}
+        <section class="mt-12 max-w-lg mx-auto bg-white p-8 rounded-2xl shadow-xl fade-in">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Kết quả Dự đoán</h2>
+            <p class="text-lg text-center text-gray-600">
+                Chỉ số FWI dự đoán: <span class="font-bold text-green-600">{{ result }}</span>
+            </p>
+        </section>
+        {% endif %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-r from-gray-800 to-gray-900 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-lg">&copy; 2025 Algerian Forest Fires Prediction by Trương Nhất Nguyên. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Fade-in Animation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 200);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            elements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
 </html>
